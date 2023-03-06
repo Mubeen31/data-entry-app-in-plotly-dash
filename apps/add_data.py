@@ -1,3 +1,4 @@
+import dash
 from dash import html
 from dash import dcc
 import dash_bootstrap_components as dbc
@@ -49,9 +50,10 @@ layout = html.Div([
 
 @app.callback(Output('insert_data', 'children'),
               [Input('add_data', 'n_clicks')],
-              [Input('select_product', 'value')],
+              [State('select_product', 'value')],
               [State('country_name', 'value')],
-              [State('sales_value', 'value')])
+              [State('sales_value', 'value')],
+              prevent_initial_call=True)
 def update_value(n_clicks, select_product, country_name, sales_value):
     now = datetime.now()
     dt_string = now.strftime('%Y-%m-%d %H:%M:%S')
@@ -71,7 +73,7 @@ def update_value(n_clicks, select_product, country_name, sales_value):
          u'DateTime': dt_string}
     ]
 
-    if n_clicks >= 0:
+    if n_clicks > 0:
         return [
             client.insert_rows_json(table_id, rows_to_insert)
         ]
