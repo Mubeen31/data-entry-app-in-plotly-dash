@@ -24,7 +24,7 @@ app.layout = html.Div([
         clearable=True,
         style={'margin-top': '-5px',
                'width': '190px',
-               'display': None}),
+               'display': 'None'}),
 
     dbc.Navbar(children=[
         html.Div([
