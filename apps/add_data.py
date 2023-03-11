@@ -14,43 +14,105 @@ from datetime import datetime
 
 layout = html.Div([
 
-    dbc.Row([
-        dbc.Col([
-            html.P('Type country name', style={'color': '#666666'}),
-            dcc.Input(id='country_name',
-                      style={'margin-top': '-10px'})
-        ]),
-        dbc.Col([
-            html.P('Select product', style={'color': '#666666'}),
-            dcc.Dropdown(
-                id='select_product',
-                options=['Bread', 'Eggs', 'Yogurt', 'Coconut cream'],
-                searchable=True,
-                clearable=True,
-                style={'margin-top': '-5px', 'width': '190px'})
-        ]),
-        dbc.Col([
-            html.P('Type price', style={'color': '#666666'}),
-            dcc.Input(id='sales_value',
-                      style={'margin-top': '-10px'})
-        ]),
-        dbc.Col([
-            html.P('Type quantity', style={'color': '#666666'}),
-            dcc.Input(id='quantity_value',
-                      style={'margin-top': '-10px'})
-        ]),
-    ]),
+    html.Div(id='insert_data', children=[]),
 
-    dbc.Row([
-        dbc.Col([
-            html.Button('Add Data',
-                        id='add_data',
-                        n_clicks=0)
-        ])
-    ]),
+    html.Div([
+        html.Div([
+            html.P(dcc.Markdown('''Insert data using the below button in the **Google Big Query** Database.'''),
+                   style={'margin-bottom': '-10px', 'color': 'black'}),
+            dbc.Button("Add Data",
+                       id="open-centered",
+                       n_clicks=0,
+                       class_name='text_size'),
+        ], className='button_text'),
+        dbc.Modal([
+            dbc.ModalHeader(dbc.ModalTitle("Add data using the below cells."),
+                            close_button=True),
+            dbc.ModalBody([
+                html.Div([
+                    html.Div([
+                        html.P('Type country name', style={'color': 'white'}),
+                        dcc.Input(id='country_name',
+                                  style={'margin-top': '-10px', 'color': 'black'})
+                    ], className='input_column'),
+                    html.Div([
+                        html.P('Select product', style={'color': 'white'}),
+                        dcc.Dropdown(
+                            id='select_product',
+                            options=['Bread', 'Eggs', 'Yogurt', 'Coconut cream'],
+                            searchable=True,
+                            clearable=True,
+                            style={'margin-top': '-5px', 'width': '190px', 'color': 'black'})
+                    ], className='input_column'),
+                    html.Div([
+                        html.P('Type price', style={'color': 'white'}),
+                        dcc.Input(id='sales_value',
+                                  style={'margin-top': '-10px', 'color': 'black'})
+                    ], className='input_column'),
+                    html.Div([
+                        html.P('Type quantity', style={'color': 'white'}),
+                        dcc.Input(id='quantity_value',
+                                  style={'margin-top': '-10px', 'color': 'black'})
+                    ], className='input_column'),
+                ], className='input_row'),
 
-    html.Div(id='insert_data', children=[])
+                html.Div([
+                    dbc.Button('Add Data',
+                               id='add_data',
+                               n_clicks=0,
+                               class_name='text_size')
+                ], className='button_row'),
+            ]),
+            dbc.ModalFooter(dbc.Button("Close",
+                                       id="close-centered",
+                                       className="ms-auto",
+                                       n_clicks=0))
+        ], id="modal-centered",
+            centered=True,
+            is_open=False,
+            size="xl"),
+    ], className='modal_row'),
+
+    html.Div([
+        dbc.Modal([
+            dbc.ModalBody("Data has been added. To view data, visit the 'Analyze Data' link.",
+                          style={'color': 'white'}),
+            dbc.ModalFooter(
+                dbc.Button("Close",
+                           id="data_added_close",
+                           className="ms-auto",
+                           n_clicks=0
+                           )
+            ),
+        ], id="data_added_modal",
+            is_open=False
+        )
+    ])
 ])
+
+
+@app.callback(
+    Output("modal-centered", "is_open"),
+    [Input("open-centered", "n_clicks")],
+    [Input("close-centered", "n_clicks")],
+    [State("modal-centered", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
+
+
+@app.callback(
+    Output("data_added_modal", "is_open"),
+    [Input("add_data", "n_clicks")],
+    [Input("data_added_close", "n_clicks")],
+    [State("data_added_modal", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
 
 
 @app.callback(Output('insert_data', 'children'),

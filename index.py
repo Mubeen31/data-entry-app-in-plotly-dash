@@ -48,21 +48,25 @@ app.layout = html.Div([
                              className='location'),
 
                     dbc.Spinner(html.Div(id='date',
-                                         className='date_id'))
+                                         className='date_id'),
+                                color='success')
                 ], className='location_date_time')
             ], className='nav_title'),
 
             dbc.Nav([dbc.NavItem(dbc.NavLink('Analyze Data', href='/apps/analyze_data',
                                              active='exact',
-                                             style={'color': 'white'})
+                                             style={'color': 'white'},
+                                             class_name='nav_text_size')
                                  ),
                      dbc.NavItem(dbc.NavLink('Add Data', href='/apps/add_data',
                                              active='exact',
-                                             style={'color': 'white'})
+                                             style={'color': 'white'},
+                                             class_name='nav_text_size')
                                  ),
                      dbc.NavItem(dbc.NavLink('User Data', href='/apps/user_data',
                                              active='exact',
-                                             style={'color': 'white'})
+                                             style={'color': 'white'},
+                                             class_name='nav_text_size')
                                  )
 
                      ],
@@ -73,7 +77,7 @@ app.layout = html.Div([
 
     ],
         color='dark',
-        dark=True,
+        dark=True
     ),
 
     html.Div(id='page-content', children=[])
