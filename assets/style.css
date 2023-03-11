@@ -51,3 +51,11 @@ body {
 .move_left {
   margin-right: 10px;
 }
+
+.date_format {
+  display: flex;
+  flex-direction: row;
+  color: #bfbfbf;
+  font-family: sans-serif;
+  font-size: 15px;
+}

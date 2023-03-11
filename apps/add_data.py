@@ -21,19 +21,24 @@ layout = html.Div([
                       style={'margin-top': '-10px'})
         ]),
         dbc.Col([
-            html.P('Type sales value', style={'color': '#666666'}),
+            html.P('Select product', style={'color': '#666666'}),
+            dcc.Dropdown(
+                id='select_product',
+                options=['Bread', 'Eggs', 'Yogurt', 'Coconut cream'],
+                searchable=True,
+                clearable=True,
+                style={'margin-top': '-5px', 'width': '190px'})
+        ]),
+        dbc.Col([
+            html.P('Type price', style={'color': '#666666'}),
             dcc.Input(id='sales_value',
                       style={'margin-top': '-10px'})
         ]),
         dbc.Col([
-            html.P('Select product', style={'color': '#666666'}),
-            dcc.Dropdown(
-                id='select_product',
-                options=['Bread', 'Eggs', 'Yogurt'],
-                searchable=True,
-                clearable=True,
-                style={'margin-top': '-5px', 'width': '190px'})
-        ])
+            html.P('Type quantity', style={'color': '#666666'}),
+            dcc.Input(id='quantity_value',
+                      style={'margin-top': '-10px'})
+        ]),
     ]),
 
     dbc.Row([
@@ -53,13 +58,15 @@ layout = html.Div([
               [State('select_product', 'value')],
               [State('country_name', 'value')],
               [State('sales_value', 'value')],
+              [State('quantity_value', 'value')],
               prevent_initial_call=True)
-def update_value(n_clicks, select_product, country_name, sales_value):
+def update_value(n_clicks, select_product, country_name, sales_value, quantity_value):
     now = datetime.now()
     dt_string = now.strftime('%Y-%m-%d %H:%M:%S')
     selectProduct = select_product
     countryName = country_name
     salesValue = sales_value
+    quantityValue = quantity_value
 
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'crud.json'
 
@@ -70,7 +77,8 @@ def update_value(n_clicks, select_product, country_name, sales_value):
         {u'Country': countryName,
          u'Sales': salesValue,
          u'Product': selectProduct,
-         u'DateTime': dt_string}
+         u'DateTime': dt_string,
+         u'Quantity': quantityValue}
     ]
 
     if n_clicks > 0:

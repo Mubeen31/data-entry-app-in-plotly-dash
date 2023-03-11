@@ -17,9 +17,14 @@ from apps import analyze_data, add_data, user_data
 app.layout = html.Div([
     dcc.Location(id='url', refresh=True),
 
-    dcc.Interval(id='update_value',
-                 interval=1 * 1000,
-                 n_intervals=0),
+    dcc.Dropdown(
+        id='select_product',
+        options=['Bread', 'Eggs', 'Yogurt', 'Coconut cream'],
+        searchable=True,
+        clearable=True,
+        style={'margin-top': '-5px',
+               'width': '190px',
+               'display': None}),
 
     dbc.Navbar(children=[
         html.Div([
@@ -86,6 +91,26 @@ def display_page(pathname):
         return user_data.layout
     else:
         return analyze_data.layout
+
+
+@app.callback(Output('date', 'children'),
+              [Input('select_product', 'value')])
+def update_confirmed(n_intervals):
+    credentials = service_account.Credentials.from_service_account_file('crud.json')
+    project_id = 'data-streaming-368616'
+    df_sql = f"""SELECT DateTime
+                     FROM
+                     `data-streaming-368616.crudDatabase.crudTable`
+                     ORDER BY
+                     DateTime DESC LIMIT 1
+                     """
+    df = pd1.read_gbq(df_sql, project_id=project_id, dialect='standard', credentials=credentials)
+    get_date = df['DateTime'].head(1).iloc[0]
+
+    return [
+        html.Div(get_date,
+                 className='date_format')
+    ]
 
 
 if __name__ == '__main__':
