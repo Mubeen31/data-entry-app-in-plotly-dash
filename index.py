@@ -44,7 +44,7 @@ app.layout = html.Div([
                 ),
 
                 html.Div([
-                    html.Div('Last data update time:',
+                    html.Div('Last sales data update time:',
                              className='location'),
 
                     dbc.Spinner(html.Div(id='date',
@@ -58,7 +58,7 @@ app.layout = html.Div([
                                              style={'color': 'white'},
                                              class_name='nav_text_size')
                                  ),
-                     dbc.NavItem(dbc.NavLink('Add Data', href='/apps/add_data',
+                     dbc.NavItem(dbc.NavLink('Add Sales Data', href='/apps/add_data',
                                              active='exact',
                                              style={'color': 'white'},
                                              class_name='nav_text_size')
