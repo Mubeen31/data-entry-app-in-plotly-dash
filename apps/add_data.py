@@ -33,12 +33,14 @@ layout = html.Div([
                     html.Div([
                         html.P('Type country name', style={'color': 'white'}),
                         dcc.Input(id='country_name',
+                                  placeholder='Type country name',
                                   style={'margin-top': '-10px', 'color': 'black'})
                     ], className='input_column'),
                     html.Div([
                         html.P('Select product', style={'color': 'white'}),
                         dcc.Dropdown(
                             id='select_product',
+                            placeholder='Select product',
                             options=['Bread', 'Eggs', 'Yogurt', 'Coconut cream'],
                             searchable=True,
                             clearable=True,
@@ -47,17 +49,19 @@ layout = html.Div([
                     html.Div([
                         html.P('Type price', style={'color': 'white'}),
                         dcc.Input(id='sales_value',
+                                  placeholder='Type price value',
                                   style={'margin-top': '-10px', 'color': 'black'})
                     ], className='input_column'),
                     html.Div([
                         html.P('Type quantity', style={'color': 'white'}),
                         dcc.Input(id='quantity_value',
+                                  placeholder='Type number of quantities',
                                   style={'margin-top': '-10px', 'color': 'black'})
                     ], className='input_column'),
                 ], className='input_row'),
 
                 html.Div([
-                    dbc.Button('Add Data',
+                    dbc.Button('Submit Data',
                                id='add_data',
                                n_clicks=0,
                                class_name='text_size')
