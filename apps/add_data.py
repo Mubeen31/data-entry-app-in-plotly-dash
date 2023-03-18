@@ -18,7 +18,7 @@ layout = html.Div([
 
     html.Div([
         html.Div([
-            html.P(dcc.Markdown('''Insert data using the below button in the **Google Big Query** Database.'''),
+            html.P(dcc.Markdown('''Insert sales data using the below button in the **Google Big Query** Database.'''),
                    style={'margin-bottom': '-10px', 'color': 'black'}),
             dbc.Button("Add Data",
                        id="open-centered",
