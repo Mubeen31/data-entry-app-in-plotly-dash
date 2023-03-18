@@ -55,7 +55,7 @@ layout = html.Div([
                     html.Div([
                         html.P('Type quantity', style={'color': 'white'}),
                         dcc.Input(id='quantity_value',
-                                  placeholder='Type number of quantities',
+                                  placeholder='Type quantity value',
                                   style={'margin-top': '-10px', 'color': 'black'})
                     ], className='input_column'),
                 ], className='input_row'),
