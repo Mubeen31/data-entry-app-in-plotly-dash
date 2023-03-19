@@ -11,6 +11,25 @@ import pandas_gbq as pd1
 from google.cloud import bigquery
 import os
 from datetime import datetime
+from dash import dash_table
+
+credentials = service_account.Credentials.from_service_account_file('crud.json')
+project_id = 'data-streaming-368616'
+df_sql = f"""SELECT
+             DateTime,
+             FirstName,
+             LastName,
+             DateOfBirth,
+             Email,
+             Address,
+             MobileNo,
+             CountryName
+             FROM
+             `data-streaming-368616.userDatabase.userDataRecord`
+             ORDER BY
+             DateTime DESC LIMIT 1
+             """
+df4 = pd1.read_gbq(df_sql, project_id=project_id, dialect='standard', credentials=credentials)
 
 layout = html.Div([
 
@@ -178,6 +197,35 @@ layout = html.Div([
     #         is_open=False
     #     )
     # ])
+
+    html.Div([
+        dbc.Spinner(html.Div([dash_table.DataTable(id='my_user_datatable',
+                                                   columns=[{"name": i, "id": i} for i in df4.columns],
+                                                   page_size=13,
+                                                   sort_action="native",
+                                                   sort_mode="multi",
+                                                   virtualization=True,
+                                                   style_cell={'textAlign': 'left',
+                                                               'min-width': '100px',
+                                                               'backgroundColor': 'rgba(255, 255, 255, 0)',
+                                                               'minWidth': 180,
+                                                               'maxWidth': 180,
+                                                               'width': 180},
+                                                   style_header={
+                                                       'backgroundColor': 'black',
+                                                       'fontWeight': 'bold',
+                                                       'font': 'Lato, sans-serif',
+                                                       'color': 'orange',
+                                                       'border': '1px solid white',
+                                                   },
+                                                   style_data={'textOverflow': 'hidden',
+                                                               'color': 'black',
+                                                               'fontWeight': 'bold',
+                                                               'font': 'Lato, sans-serif'},
+                                                   fixed_rows={'headers': True},
+                                                   )
+                              ], className='bg_table'), color='success')
+    ], className='bg_container')
 ])
 
 
@@ -248,6 +296,7 @@ def update_value(n_clicks, first_name, last_name, date_of_birth, email_address, 
             client.insert_rows_json(table_id, rows_to_insert)
         ]
 
+
 # @app.callback(
 #     Output("modal-centered-user-deleted", "is_open"),
 #     [Input("open-centered-user-deleted", "n_clicks")],
@@ -304,3 +353,30 @@ def update_value(n_clicks, first_name, last_name, date_of_birth, email_address, 
 #         return [
 #             client.query(table_id, dml_statement)
 #         ]
+
+@app.callback(Output('my_user_datatable', 'data'),
+              [Input("user_data_added_close", "n_clicks")])
+def display_table(n1):
+    credentials = service_account.Credentials.from_service_account_file('crud.json')
+    project_id = 'data-streaming-368616'
+    df_sql = f"""SELECT
+                 DateTime,
+                 FirstName,
+                 LastName,
+                 DateOfBirth,
+                 Email,
+                 Address,
+                 MobileNo,
+                 CountryName
+                 FROM
+                 `data-streaming-368616.userDatabase.userDataRecord`
+                 ORDER BY
+                 DateTime DESC
+                 """
+    df3 = pd1.read_gbq(df_sql, project_id=project_id, dialect='standard', credentials=credentials)
+    df3['DateTime'] = pd.to_datetime(df3['DateTime'])
+    df3['DateTime'] = pd.to_datetime(df3['DateTime'], format='%Y-%m-%d %H:%M:%S')
+    # df3['Date'] = df3['DateTime'].dt.date
+    # df3['Hour'] = pd.to_datetime(df3['DateTime']).dt.hour
+    if n1 >= 0:
+        return df3.to_dict('records')

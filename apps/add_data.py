@@ -133,7 +133,7 @@ layout = html.Div([
                                                                'font': 'Lato, sans-serif'},
                                                    fixed_rows={'headers': True},
                                                    )
-                              ], className='bg_table'))
+                              ], className='bg_table'), color='success')
     ], className='bg_container')
 ])
 
