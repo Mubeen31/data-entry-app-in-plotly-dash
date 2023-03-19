@@ -1,9 +1,7 @@
-import dash
 from dash import html
 from dash import dcc
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
-import plotly.graph_objs as go
 from app import app
 import pandas as pd
 from google.oauth2 import service_account
@@ -11,6 +9,22 @@ import pandas_gbq as pd1
 from google.cloud import bigquery
 import os
 from datetime import datetime
+from dash import dash_table
+
+credentials = service_account.Credentials.from_service_account_file('crud.json')
+project_id = 'data-streaming-368616'
+df_sql = f"""SELECT
+             DateTime,
+             Country,
+             Product,
+             Sales,
+             Quantity
+             FROM
+             `data-streaming-368616.crudDatabase.crudTable`
+             ORDER BY
+             DateTime DESC LIMIT 1
+             """
+df4 = pd1.read_gbq(df_sql, project_id=project_id, dialect='standard', credentials=credentials)
 
 layout = html.Div([
 
@@ -79,7 +93,7 @@ layout = html.Div([
 
     html.Div([
         dbc.Modal([
-            dbc.ModalBody("Data has been added. To view data, visit the 'Analyze Data' link.",
+            dbc.ModalBody("Data has been added. View data in the below table and visit the 'Analyze Data' link.",
                           style={'color': 'white'}),
             dbc.ModalFooter(
                 dbc.Button("Close",
@@ -91,7 +105,36 @@ layout = html.Div([
         ], id="data_added_modal",
             is_open=False
         )
-    ])
+    ]),
+
+    html.Div([
+        dbc.Spinner(html.Div([dash_table.DataTable(id='my_datatable',
+                                                   columns=[{"name": i, "id": i} for i in df4.columns],
+                                                   page_size=13,
+                                                   sort_action="native",
+                                                   sort_mode="multi",
+                                                   virtualization=True,
+                                                   style_cell={'textAlign': 'left',
+                                                               'min-width': '100px',
+                                                               'backgroundColor': 'rgba(255, 255, 255, 0)',
+                                                               'minWidth': 180,
+                                                               'maxWidth': 180,
+                                                               'width': 180},
+                                                   style_header={
+                                                       'backgroundColor': 'black',
+                                                       'fontWeight': 'bold',
+                                                       'font': 'Lato, sans-serif',
+                                                       'color': 'orange',
+                                                       'border': '1px solid white',
+                                                   },
+                                                   style_data={'textOverflow': 'hidden',
+                                                               'color': 'black',
+                                                               'fontWeight': 'bold',
+                                                               'font': 'Lato, sans-serif'},
+                                                   fixed_rows={'headers': True},
+                                                   )
+                              ], className='bg_table'))
+    ], className='bg_container')
 ])
 
 
@@ -151,3 +194,28 @@ def update_value(n_clicks, select_product, country_name, sales_value, quantity_v
         return [
             client.insert_rows_json(table_id, rows_to_insert)
         ]
+
+
+@app.callback(Output('my_datatable', 'data'),
+              [Input("data_added_close", "n_clicks")])
+def display_table(n1):
+    credentials = service_account.Credentials.from_service_account_file('crud.json')
+    project_id = 'data-streaming-368616'
+    df_sql = f"""SELECT
+                 DateTime,
+                 Country,
+                 Product,
+                 Sales,
+                 Quantity
+                 FROM
+                 `data-streaming-368616.crudDatabase.crudTable`
+                 ORDER BY
+                 DateTime DESC
+                 """
+    df3 = pd1.read_gbq(df_sql, project_id=project_id, dialect='standard', credentials=credentials)
+    df3['DateTime'] = pd.to_datetime(df3['DateTime'])
+    df3['DateTime'] = pd.to_datetime(df3['DateTime'], format='%Y-%m-%d %H:%M:%S')
+    # df3['Date'] = df3['DateTime'].dt.date
+    # df3['Hour'] = pd.to_datetime(df3['DateTime']).dt.hour
+    if n1 >= 0:
+        return df3.to_dict('records')
