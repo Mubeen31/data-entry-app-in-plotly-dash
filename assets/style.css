@@ -112,6 +112,7 @@ body {
   border-left: 1px solid #ffffff;
   border-right: 1px solid #ffffff;
   border-bottom: 1px solid #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
 .bg_container {
@@ -120,4 +121,43 @@ body {
   justify-content: center;
   margin-top: 20px;
   margin-bottom: 50px;
+}
+
+.background_card {
+  background-color: #ffffff;
+  width: 250px;
+  height: 150px;
+  border-radius: 15px;
+  border: 1px solid #cccccc;
+}
+
+.background_card:hover {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.card_row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+  column-gap: 10px;
+  flex-wrap: wrap;
+}
+
+.numeric_value {
+  color: #404040;
+  font-weight: bold;
+  font-size: 35px;
+}
+
+.numeric_value_center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.symbol {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
 }
