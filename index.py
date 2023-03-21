@@ -33,7 +33,7 @@ app.layout = html.Div([
                     dbc.Row([
                         html.Div([
                             dbc.Col(html.Img(src=app.get_asset_url('statistics.png'), height='30px')),
-                            dbc.Col(dbc.NavbarBrand('CRUD App', className='ms-2')),
+                            dbc.Col(dbc.NavbarBrand('Data Entry App', className='ms-2')),
                         ], className='adjust_image_title')
                     ],
                         align='center',
@@ -53,7 +53,7 @@ app.layout = html.Div([
                 ], className='location_date_time')
             ], className='nav_title'),
 
-            dbc.Nav([dbc.NavItem(dbc.NavLink('Analyze Data', href='/apps/analyze_data',
+            dbc.Nav([dbc.NavItem(dbc.NavLink('Analyze Data', href='/',
                                              active='exact',
                                              style={'color': 'white'},
                                              class_name='nav_text_size')
@@ -87,14 +87,14 @@ app.layout = html.Div([
 @app.callback(Output('page-content', 'children'),
               [Input('url', 'pathname')])
 def display_page(pathname):
-    if pathname == '/apps/analyze_data':
+    if pathname == '/':
         return analyze_data.layout
     elif pathname == '/apps/add_data':
         return add_data.layout
     elif pathname == '/apps/user_data':
         return user_data.layout
-    else:
-        return analyze_data.layout
+    # else:
+    #     return analyze_data.layout
 
 
 @app.callback(Output('date', 'children'),
