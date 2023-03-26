@@ -45,10 +45,15 @@ layout = html.Div([
             dbc.ModalBody([
                 html.Div([
                     html.Div([
-                        html.P('Type country name', style={'color': 'white'}),
-                        dcc.Input(id='country_name',
-                                  placeholder='Type country name',
-                                  style={'margin-top': '-10px', 'color': 'black'})
+                        html.P('Select country', style={'color': 'white'}),
+                        dcc.Dropdown(
+                            id='country_name',
+                            placeholder='Select country',
+                            options=['Brazil', 'India', 'Pakistan', 'Canada', 'France', 'Germany', 'USA', 'UK',
+                                     'China', 'Russia', 'Bangladesh', 'Spain', 'Nigeria'],
+                            searchable=True,
+                            clearable=True,
+                            style={'margin-top': '-5px', 'width': '190px', 'color': 'black'})
                     ], className='input_column'),
                     html.Div([
                         html.P('Select product', style={'color': 'white'}),

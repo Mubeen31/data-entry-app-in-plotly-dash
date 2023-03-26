@@ -162,3 +162,46 @@ body {
   flex-direction: row;
   margin-top: 10px;
 }
+
+.first_chart_grid {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  justify-content: center;
+  column-gap: 10px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.first_chart {
+  background-color: #ffffff;
+  width: 510px;
+  height: 350px;
+  border-radius: 15px;
+  border: 1px solid #cccccc;
+}
+
+.first_chart:hover {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.tabs_container {
+  width: 510px;
+  height: 350px;
+  background-color: #ffffff;
+  white-space: pre;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border: 1px solid #cccccc;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.tabs_container:hover {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.tab_bar_chart {
+  width: 510px;
+}
