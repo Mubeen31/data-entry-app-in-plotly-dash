@@ -95,7 +95,7 @@ layout = html.Div([
     html.Div([
         dbc.Modal([
             dbc.ModalBody("Data has been added. View data in the below table and visit the 'Analyze Data' link.",
-                          style={'color': 'white'}),
+                          style={'color': 'black'}),
             dbc.ModalFooter(
                 dbc.Button("Close",
                            id="data_added_close",

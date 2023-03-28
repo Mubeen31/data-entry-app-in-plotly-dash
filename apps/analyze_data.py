@@ -257,13 +257,14 @@ def update_value(n_intervals):
     project_id = 'data-streaming-368616'
     df_sql = f"""SELECT
                      Product,
-                     Sales
+                     Sales,
+                     Quantity
                      FROM
                      `data-streaming-368616.crudDatabase.crudTable`
                      """
     df3 = pd1.read_gbq(df_sql, project_id=project_id, dialect='standard', credentials=credentials)
     df3 = df3.dropna(how='any', axis=0)
-    sales_by_product = df3.groupby(['Product'])['Sales'].sum().reset_index()
+    sales_by_product = df3.groupby(['Product']).agg({'Sales': 'sum', 'Quantity': 'sum'}).reset_index()
 
     return {
         'data': [go.Bar(
@@ -276,7 +277,8 @@ def update_value(n_intervals):
             hoverinfo='text',
             hovertext=
             '<b>Product</b>: ' + sales_by_product['Product'].astype(str) + '<br>' +
-            '<b>Sales ($)</b>: ' + [f'{x:.3f} $' for x in sales_by_product['Sales']] + '<br>'
+            '<b>Sales ($)</b>: ' + [f'{x:.3f} $' for x in sales_by_product['Sales']] + '<br>' +
+            '<b>Quantity</b>: ' + [f'{x:.0f}' for x in sales_by_product['Quantity']] + '<br>'
         )],
         'layout': go.Layout(
             height=350,
@@ -321,13 +323,14 @@ def update_value(n_intervals):
     project_id = 'data-streaming-368616'
     df_sql = f"""SELECT
                      Country,
-                     Sales
+                     Sales,
+                     Quantity
                      FROM
                      `data-streaming-368616.crudDatabase.crudTable`
                      """
     df3 = pd1.read_gbq(df_sql, project_id=project_id, dialect='standard', credentials=credentials)
     df3 = df3.dropna(how='any', axis=0)
-    sales_by_product = df3.groupby(['Country'])['Sales'].sum().reset_index()
+    sales_by_product = df3.groupby(['Country']).agg({'Sales': 'sum', 'Quantity': 'sum'}).reset_index()
 
     return {
         'data': [go.Scatter(
@@ -336,7 +339,7 @@ def update_value(n_intervals):
             text=sales_by_product['Country'],
             textposition='top center',
             mode='markers + text',
-            marker=dict(size=sales_by_product['Sales'].astype(int) / 50,
+            marker=dict(size=sales_by_product['Sales'].astype(int) / 25,
                         color=sales_by_product['Sales'],
                         colorscale='HSV',
                         showscale=False,
@@ -347,7 +350,8 @@ def update_value(n_intervals):
             hoverinfo='text',
             hovertext=
             '<b>Country</b>: ' + sales_by_product['Country'].astype(str) + '<br>' +
-            '<b>Sales ($)</b>: ' + [f'{x:.3f} $' for x in sales_by_product['Sales']] + '<br>'
+            '<b>Sales ($)</b>: ' + [f'{x:.3f} $' for x in sales_by_product['Sales']] + '<br>' +
+            '<b>Quantity</b>: ' + [f'{x:.0f}' for x in sales_by_product['Quantity']] + '<br>'
         )],
         'layout': go.Layout(
             height=350,
