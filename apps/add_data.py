@@ -49,21 +49,17 @@ layout = html.Div([
                         dcc.Dropdown(
                             id='country_name',
                             placeholder='Select country',
-                            options=['Brazil', 'India', 'Pakistan', 'Canada', 'France', 'Germany', 'USA', 'UK',
-                                     'China', 'Russia', 'Bangladesh', 'Spain', 'Nigeria'],
+                            options=['Australia', 'Brazil', 'India', 'Pakistan', 'Canada', 'France', 'Germany', 'USA',
+                                     'UK', 'China', 'Russia', 'Bangladesh', 'Spain', 'Nigeria'],
                             searchable=True,
                             clearable=True,
                             style={'margin-top': '-5px', 'width': '190px', 'color': 'black'})
                     ], className='input_column'),
                     html.Div([
-                        html.P('Select product', style={'color': 'white'}),
-                        dcc.Dropdown(
-                            id='select_product',
-                            placeholder='Select product',
-                            options=['Bread', 'Eggs', 'Yogurt', 'Coconut cream'],
-                            searchable=True,
-                            clearable=True,
-                            style={'margin-top': '-5px', 'width': '190px', 'color': 'black'})
+                        html.P('Type product name', style={'color': 'white'}),
+                        dcc.Input(id='product_name',
+                                  placeholder='Type product name',
+                                  style={'margin-top': '-10px', 'color': 'black'})
                     ], className='input_column'),
                     html.Div([
                         html.P('Type price', style={'color': 'white'}),
@@ -169,7 +165,7 @@ def toggle_modal(n1, n2, is_open):
 
 @app.callback(Output('insert_data', 'children'),
               [Input('add_data', 'n_clicks')],
-              [State('select_product', 'value')],
+              [State('product_name', 'value')],
               [State('country_name', 'value')],
               [State('sales_value', 'value')],
               [State('quantity_value', 'value')],
