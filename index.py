@@ -93,8 +93,6 @@ def display_page(pathname):
         return add_data.layout
     elif pathname == '/apps/user_data':
         return user_data.layout
-    # else:
-    #     return analyze_data.layout
 
 
 @app.callback(Output('date', 'children'),
