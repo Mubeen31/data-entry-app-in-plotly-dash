@@ -107,7 +107,7 @@ def display_table(update_data):
                 html.Div('$', className='symbol')
             ], className='numeric_value_center')
         ]
-    elif total_sales >= 8 and total_sales <= 1:
+    elif total_sales >= 8 and total_sales <= 10:
         return [
             html.Div('Total Sales',
                      style={'color': '#a6a6a6',
