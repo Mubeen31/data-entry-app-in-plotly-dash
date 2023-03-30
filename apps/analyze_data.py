@@ -90,19 +90,47 @@ def display_table(update_data):
                  `data-streaming-368616.crudDatabase.crudTable`
                  """
     df3 = pd1.read_gbq(df_sql, project_id=project_id, dialect='standard', credentials=credentials)
-    total_sales = df3['Sales'].sum()
+    total_sales = len(str(df3['Sales'].sum()))
+    total_sales_million = df3['Sales'].sum() / 1000000
+    total_sales_billion = df3['Sales'].sum() / 1000000000
+    total_sales_trillion = df3['Sales'].sum() / 1000000000000
 
-    return [
-        html.Div('Total Sales',
-                 style={'color': '#a6a6a6',
-                        'margin-left': '10px',
-                        'margin-top': '5px'}),
-        html.Div([
-            html.Div('{0:,.0f}'.format(total_sales),
-                     className='numeric_value'),
-            html.Div('$', className='symbol')
-        ], className='numeric_value_center')
-    ]
+    if total_sales >= 0 and total_sales <= 7:
+        return [
+            html.Div('Total Sales',
+                     style={'color': '#a6a6a6',
+                            'margin-left': '10px',
+                            'margin-top': '5px'}),
+            html.Div([
+                html.Div('{0:,.3f} M'.format(total_sales_million),
+                         className='numeric_value'),
+                html.Div('$', className='symbol')
+            ], className='numeric_value_center')
+        ]
+    elif total_sales >= 8 and total_sales <= 10:
+        return [
+            html.Div('Total Sales',
+                     style={'color': '#a6a6a6',
+                            'margin-left': '10px',
+                            'margin-top': '5px'}),
+            html.Div([
+                html.Div('{0:,.3f} B'.format(total_sales_billion),
+                         className='numeric_value'),
+                html.Div('$', className='symbol')
+            ], className='numeric_value_center')
+        ]
+    elif total_sales >= 11:
+        return [
+            html.Div('Total Sales',
+                     style={'color': '#a6a6a6',
+                            'margin-left': '10px',
+                            'margin-top': '5px'}),
+            html.Div([
+                html.Div('{0:,.3f} T'.format(total_sales_trillion),
+                         className='numeric_value'),
+                html.Div('$', className='symbol')
+            ], className='numeric_value_center')
+        ]
 
 
 @app.callback(Output('total_product', 'children'),

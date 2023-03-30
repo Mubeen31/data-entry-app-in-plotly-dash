@@ -10,13 +10,10 @@ import pandas_gbq as pd1
 credentials = service_account.Credentials.from_service_account_file('crud.json')
 project_id = 'data-streaming-368616'
 df_sql = f"""SELECT
-                     Country,
-                     Sales,
-                     Quantity
-                     FROM
-                     `data-streaming-368616.crudDatabase.crudTable`
-                     """
+                 Sales
+                 FROM
+                 `data-streaming-368616.crudDatabase.crudTable`
+                 """
 df3 = pd1.read_gbq(df_sql, project_id=project_id, dialect='standard', credentials=credentials)
-df3 = df3.dropna(how='any', axis=0)
-sales_by_product = df3.groupby(['Country']).agg({'Sales': 'sum', 'Quantity': 'sum'}).reset_index()
-print(sales_by_product)
+total_sales = len(str(df3['Sales'].sum()))
+print(total_sales)
