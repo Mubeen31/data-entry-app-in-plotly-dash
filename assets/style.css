@@ -206,3 +206,19 @@ body {
   width: 510px;
   border-top: 1px solid #e6e6e6;
 }
+
+.text_input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 5px;
+  margin-right: 10px;
+  z-index: 1;
+  position: absolute;
+}
+
+.chart_input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}

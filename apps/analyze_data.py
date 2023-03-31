@@ -10,9 +10,20 @@ import pandas_gbq as pd1
 sales_by_product_chart = dcc.Graph(id='bar_chart',
                                    config={'displayModeBar': False},
                                    className='tab_bar_chart'),
-sales_by_country_chart = dcc.Graph(id='bubble_chart',
-                                   config={'displayModeBar': False},
-                                   className='tab_bar_chart')
+sales_by_country_chart = html.Div([
+    html.Div([
+        dcc.Graph(id='bubble_chart',
+                  config={'displayModeBar': False},
+                  className='tab_bar_chart'),
+        html.Div([
+            html.Div('Select bubble size', style={'margin-top': '15px'}),
+            dcc.Input(id='bubble_value',
+                      type='number',
+                      value=25,
+                      style={'width': '100px', 'height': '30px'}),
+        ], className='text_input')
+    ], className='chart_input')
+])
 
 tab_style = {
     'border-top': 'none',
@@ -33,7 +44,8 @@ selected_tab_style = {
     'backgroundColor': 'rgba(255, 255, 255, 0)',
     'height': '35px',
     'padding': '7.5px',
-    'width': 'auto'
+    'width': 'auto',
+    'fontWeight': 'bold'
 }
 
 layout = html.Div([
@@ -357,8 +369,9 @@ def update_value(n_intervals):
 
 
 @app.callback(Output('bubble_chart', 'figure'),
-              [Input('update_data', 'n_intervals')])
-def update_value(n_intervals):
+              [Input('update_data', 'n_intervals')],
+              [Input('bubble_value', 'value')])
+def update_value(n_intervals, bubble_value):
     credentials = service_account.Credentials.from_service_account_file('crud.json')
     project_id = 'data-streaming-368616'
     df_sql = f"""SELECT
@@ -377,9 +390,9 @@ def update_value(n_intervals):
             x=sales_by_product['Country'],
             y=sales_by_product['Sales'],
             text=sales_by_product['Country'],
-            textposition='top center',
+            textposition='bottom center',
             mode='markers + text',
-            marker=dict(size=sales_by_product['Sales'].astype(int) / 25,
+            marker=dict(size=sales_by_product['Sales'].astype(int) / bubble_value,
                         color=sales_by_product['Sales'],
                         colorscale='HSV',
                         showscale=False,
@@ -397,7 +410,7 @@ def update_value(n_intervals):
             height=350,
             title={'text': '<b>Sales by Country</b>',
                    'y': 0.95,
-                   'x': 0.5,
+                   'x': 0.2,
                    'yanchor': 'top',
                    'xanchor': 'center'},
             titlefont={'color': 'rgb(214, 32, 32)',
