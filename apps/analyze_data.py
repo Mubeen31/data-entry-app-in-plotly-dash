@@ -73,9 +73,8 @@ layout = html.Div([
                         selected_style=selected_tab_style)
             ], style={'display': 'flex', 'flex-direction': 'row'})
         ], className='tabs_container')
-    ], className='first_chart_grid'),
 
-    html.Div(id='return_tab_content', children=[])
+    ], className='first_chart_grid'),
 ])
 
 
@@ -90,12 +89,25 @@ def display_table(update_data):
                  `data-streaming-368616.crudDatabase.crudTable`
                  """
     df3 = pd1.read_gbq(df_sql, project_id=project_id, dialect='standard', credentials=credentials)
-    total_sales = len(str(df3['Sales'].sum()))
+    total_sales = len(str(round(df3['Sales'].sum(), 0)))
+    total_sales_thousand = df3['Sales'].sum()
     total_sales_million = df3['Sales'].sum() / 1000000
     total_sales_billion = df3['Sales'].sum() / 1000000000
     total_sales_trillion = df3['Sales'].sum() / 1000000000000
 
-    if total_sales >= 0 and total_sales <= 7:
+    if total_sales >= 0 and total_sales <= 6:
+        return [
+            html.Div('Total Sales',
+                     style={'color': '#a6a6a6',
+                            'margin-left': '10px',
+                            'margin-top': '5px'}),
+            html.Div([
+                html.Div('{0:,.3f}'.format(total_sales_thousand),
+                         className='numeric_value'),
+                html.Div('$', className='symbol')
+            ], className='numeric_value_center')
+        ]
+    elif total_sales >= 7 and total_sales <= 10:
         return [
             html.Div('Total Sales',
                      style={'color': '#a6a6a6',
@@ -107,7 +119,7 @@ def display_table(update_data):
                 html.Div('$', className='symbol')
             ], className='numeric_value_center')
         ]
-    elif total_sales >= 8 and total_sales <= 10:
+    elif total_sales >= 11 and total_sales <= 12:
         return [
             html.Div('Total Sales',
                      style={'color': '#a6a6a6',
@@ -119,7 +131,7 @@ def display_table(update_data):
                 html.Div('$', className='symbol')
             ], className='numeric_value_center')
         ]
-    elif total_sales >= 11:
+    elif total_sales >= 13:
         return [
             html.Div('Total Sales',
                      style={'color': '#a6a6a6',

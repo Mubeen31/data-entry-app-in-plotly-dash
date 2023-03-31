@@ -204,4 +204,5 @@ body {
 
 .tab_bar_chart {
   width: 510px;
+  border-top: 1px solid #e6e6e6;
 }

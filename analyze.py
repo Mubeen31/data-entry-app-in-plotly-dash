@@ -15,5 +15,5 @@ df_sql = f"""SELECT
                  `data-streaming-368616.crudDatabase.crudTable`
                  """
 df3 = pd1.read_gbq(df_sql, project_id=project_id, dialect='standard', credentials=credentials)
-total_sales = len(str(df3['Sales'].sum()))
+total_sales = len(str(round(df3['Sales'].sum(), 0)))
 print(total_sales)
