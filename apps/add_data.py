@@ -65,12 +65,18 @@ layout = html.Div([
                         html.P('Type price', style={'color': 'white'}),
                         dcc.Input(id='sales_value',
                                   placeholder='Type price value',
+                                  minLength=0,
+                                  maxLength=3,
+                                  value='',
                                   style={'margin-top': '-10px', 'color': 'black'})
                     ], className='input_column'),
                     html.Div([
                         html.P('Type quantity', style={'color': 'white'}),
                         dcc.Input(id='quantity_value',
                                   placeholder='Type quantity value',
+                                  minLength=0,
+                                  maxLength=2,
+                                  value='',
                                   style={'margin-top': '-10px', 'color': 'black'})
                     ], className='input_column'),
                 ], className='input_row'),
@@ -164,6 +170,10 @@ def toggle_modal(n1, n2, is_open):
 
 
 @app.callback(Output('insert_data', 'children'),
+              Output('product_name', 'value'),
+              Output('country_name', 'value'),
+              Output('sales_value', 'value'),
+              Output('quantity_value', 'value'),
               [Input('add_data', 'n_clicks')],
               [State('product_name', 'value')],
               [State('country_name', 'value')],
@@ -194,7 +204,7 @@ def update_value(n_clicks, select_product, country_name, sales_value, quantity_v
     if n_clicks > 0:
         return [
             client.insert_rows_json(table_id, rows_to_insert)
-        ]
+        ], '', '', '', ''
 
 
 @app.callback(Output('my_datatable', 'data'),

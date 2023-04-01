@@ -17,6 +17,10 @@ from apps import analyze_data, add_data, user_data
 app.layout = html.Div([
     dcc.Location(id='url', refresh=True),
 
+    dcc.Interval(id='update_date_time',
+                 interval=1 * 5000,
+                 n_intervals=0),
+
     dcc.Dropdown(
         id='select_product',
         options=['Bread', 'Eggs', 'Yogurt', 'Coconut cream'],
@@ -96,7 +100,7 @@ def display_page(pathname):
 
 
 @app.callback(Output('date', 'children'),
-              [Input('select_product', 'value')])
+              [Input('update_date_time', 'n_intervals')])
 def update_confirmed(n_intervals):
     credentials = service_account.Credentials.from_service_account_file('crud.json')
     project_id = 'data-streaming-368616'

@@ -1,6 +1,7 @@
 from dash import html
 from dash import dcc
-from dash.dependencies import Input, Output
+import dash_bootstrap_components as dbc
+from dash.dependencies import Input, Output, State
 import plotly.graph_objs as go
 from app import app
 import pandas as pd
@@ -16,11 +17,15 @@ sales_by_country_chart = html.Div([
                   config={'displayModeBar': False},
                   className='tab_bar_chart'),
         html.Div([
-            html.Div('Select bubble size', style={'margin-top': '15px'}),
+            html.Div('Select bubble size', style={'margin-top': '10px'}),
             dcc.Input(id='bubble_value',
                       type='number',
                       value=25,
-                      style={'width': '100px', 'height': '30px'}),
+                      style={'width': '70px', 'height': '25px'}),
+            # dbc.Button("Change",
+            #            id="change_bubble_size",
+            #            n_clicks=0,
+            #            style={'width': '70px', 'height': '25px'})
         ], className='text_input')
     ], className='chart_input')
 ])
@@ -344,7 +349,7 @@ def update_value(n_intervals):
             plot_bgcolor='rgba(255, 255, 255, 0)',
             paper_bgcolor='rgba(255, 255, 255, 0)',
             hovermode='x',
-            margin=dict(t=50, l=50, r=40),
+            margin=dict(t=50, b=100, l=50, r=40),
             xaxis=dict(
                 showline=True,
                 showgrid=False,
@@ -389,9 +394,9 @@ def update_value(n_intervals, bubble_value):
         'data': [go.Scatter(
             x=sales_by_product['Country'],
             y=sales_by_product['Sales'],
-            text=sales_by_product['Country'],
+            # text=sales_by_product['Country'],
             textposition='bottom center',
-            mode='markers + text',
+            mode='markers',
             marker=dict(size=sales_by_product['Sales'].astype(int) / bubble_value,
                         color=sales_by_product['Sales'],
                         colorscale='HSV',
@@ -418,7 +423,7 @@ def update_value(n_intervals, bubble_value):
             plot_bgcolor='rgba(255, 255, 255, 0)',
             paper_bgcolor='rgba(255, 255, 255, 0)',
             hovermode='x',
-            margin=dict(t=50, l=50, r=40),
+            margin=dict(t=50, b=100, l=50, r=40),
             xaxis=dict(
                 showline=True,
                 showgrid=False,

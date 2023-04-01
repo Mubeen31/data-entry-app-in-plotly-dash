@@ -191,6 +191,13 @@ def toggle_modal(n1, n2, is_open):
 
 
 @app.callback(Output('insert_user_data', 'children'),
+              Output('first_name', 'value'),
+              Output('last_name', 'value'),
+              Output('date_of_birth', 'value'),
+              Output('email_address', 'value'),
+              Output('living_address', 'value'),
+              Output('name_country', 'value'),
+              Output('mobile_number', 'value'),
               [Input('insert_user_data_button', 'n_clicks')],
               [State('first_name', 'value')],
               [State('last_name', 'value')],
@@ -231,7 +238,7 @@ def update_value(n_clicks, first_name, last_name, date_of_birth, email_address, 
     if n_clicks > 0:
         return [
             client.insert_rows_json(table_id, rows_to_insert)
-        ]
+        ], '', '', '', '', '', '', ''
 
 
 @app.callback(Output('my_user_datatable', 'data'),
