@@ -242,7 +242,7 @@ def update_value(n_clicks, first_name, last_name, date_of_birth, email_address, 
 
 
 @app.callback(Output('my_user_datatable', 'data'),
-              [Input("user_data_added_close", "n_clicks")])
+              [Input("insert_user_data_button", "n_clicks")])
 def display_table(n1):
     credentials = service_account.Credentials.from_service_account_file('crud.json')
     project_id = 'data-streaming-368616'

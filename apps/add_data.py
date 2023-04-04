@@ -208,7 +208,7 @@ def update_value(n_clicks, select_product, country_name, sales_value, quantity_v
 
 
 @app.callback(Output('my_datatable', 'data'),
-              [Input("data_added_close", "n_clicks")])
+              [Input("add_data", "n_clicks")])
 def display_table(n1):
     credentials = service_account.Credentials.from_service_account_file('crud.json')
     project_id = 'data-streaming-368616'
